@@ -6,11 +6,21 @@ import { TURNS } from './constants'
 import { checkDraw, checkWinner } from './logic/board'
 import { Board } from './components/Board/Board'
 import { ScoreBoard } from './components/Board/ScoreBoard'
+import { ScorePopUp } from './components/Board/ScorePopUp'
+import { GameControls } from './components/Board/GameControls'
 
 function App() {
+  // const { board, turn, winner, resetGame, updateBoard } = useTicTacToe();
   // Tic Tac Toe
-  const [board, setBoard] = useState(Array(9).fill(null))
-  const [turn, setTurn] = useState(TURNS.X)
+  const [board, setBoard] = useState(()=>{
+    const board = window.localStorage.getItem('board')
+    return board ? JSON.parse(board) : Array(9).fill(null)
+  })
+
+  const [turn, setTurn] = useState(()=>{
+    const turn = window.localStorage.getItem('turn')
+    return turn ? turn : TURNS.X
+  })
 
   // null, there is no winner; false is a draw; true is a win
   const [winner, setWinner] = useState(null)
@@ -32,12 +42,13 @@ function App() {
       setWinner(false)
       return
     }
-
-    console.log(turn);
     
     //Change turn
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
+
+    window.localStorage.setItem('board', JSON.stringify(newBoard))
+    window.localStorage.setItem('turn', newTurn)
   }
 
   const resetGame = () => {
@@ -50,20 +61,16 @@ function App() {
   const userName = 'dsetatech'
   const displayName = 'Dseta'
 
-  return (  
+  return (
     <>
       <main className='board'>
-        <h1>Tic Tac Toe</h1>
-        <Board 
-          board={board}
-          turn={turn}
-          winner={winner}
-          updateBoard={updateBoard}
-          resetGame={resetGame} />
-        
+        <h1 translate="no">Tic tac toe</h1>
+        <GameControls resetGame={resetGame} />
+        <Board board={board} updateBoard={updateBoard} />
         <ScoreBoard turn={turn} />
-
+        <ScorePopUp winner={winner} resetGame={resetGame} turn={turn} />
       </main>
+
       <div className='tw-follow-card-container'>
         <TwitterFollowCard 
           key={userName}
@@ -71,9 +78,10 @@ function App() {
           displayName={displayName}
           initialIsFollowing={false} />
       </div>
-
     </>
-  )
+
+
+  );
 }
 
-export default App
+export default App;

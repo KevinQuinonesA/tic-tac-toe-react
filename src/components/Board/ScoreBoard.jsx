@@ -1,9 +1,7 @@
 import { Square } from './Square'
 import { TURNS } from '../../constants'
 
-export function ScoreBoard({turn}) {
-  console.log(turn);
-  
+export function ScoreBoard({turn}) {  
   return (
     <div>
         <section className='turn'>

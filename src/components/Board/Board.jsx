@@ -1,7 +1,6 @@
-import { ScorePopUp } from './ScorePopUp'
 import { Square } from './Square'
 
-export function Board({board, winner, turn, updateBoard, resetGame}) {
+export function Board({board, updateBoard}) {
   return (
     <>
         <section className='game'>
@@ -13,8 +12,6 @@ export function Board({board, winner, turn, updateBoard, resetGame}) {
             ))
           }
         </section>
-
-        <ScorePopUp winner={winner} resetGame={resetGame} turn={turn} />
     </>
   )
 }
