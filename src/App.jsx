@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TwitterFollowCard }from './components/TwitterFollowCard'
 import './App.css'
 import confetti from 'canvas-confetti'
@@ -46,9 +46,6 @@ function App() {
     //Change turn
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
-
-    window.localStorage.setItem('board', JSON.stringify(newBoard))
-    window.localStorage.setItem('turn', newTurn)
   }
 
   const resetGame = () => {
@@ -56,6 +53,11 @@ function App() {
     setTurn(TURNS.X)
     setWinner(null)
   }
+
+  useEffect(() => {
+    window.localStorage.setItem('board', JSON.stringify(board))
+    window.localStorage.setItem('turn', turn)
+  }, [board, turn])
 
   // Twitter Follow Card
   const userName = 'dsetatech'
